@@ -58,7 +58,7 @@ st.markdown(
 tab_rec, tab_dash = st.tabs(["🏍 Recomendador", "📊 Dashboard"])
 
 # ╭────────────────────────────────────────────────────────────────────────────╮
-# │ TAB: RECOMENDADOR                                                         │
+# │ TAB: RECOMENDADOR                                                          │
 # ╰────────────────────────────────────────────────────────────────────────────╯
 with tab_rec:
     st.subheader("Datos para la recomendación")
@@ -73,8 +73,6 @@ with tab_rec:
         st.error("El mínimo no puede ser ≥ al máximo.")
         st.stop()
 
-    # cilindrada (mejora beta)
-    
     st.subheader("Cilindrada")
     
     colc1, colc2 = st.columns(2)
@@ -127,100 +125,85 @@ with tab_rec:
             tipos=tipo_sel,
             ordenar_por=ordenar_por,
             ascendente=asc,
-            cilindrada_min=cc_min,  
-            cilindrada_max=cc_max,  
+            cilindrada_min=cc_min, 
+            cilindrada_max=cc_max, 
         )
         st.session_state.pagina = 1
 
-# --- Mostrar tarjetas ---
-def display_cards_from_df(data_frame_to_display, key_prefix):
-
-    """
+    # --- Función para mostrar tarjetas (se mantiene fuera de la pestaña para que sea global) ---
+    def display_cards_from_df(data_frame_to_display, key_prefix):
+        """
         Renderiza las motos en tarjetas con su información y un checkbox de favorito.
         
         Args:
             data_frame_to_display (pd.DataFrame): DataFrame con las motos a mostrar.
             key_prefix (str): Prefijo para las claves de los widgets para evitar colisiones.
-    """
-    
-    num_col = 3
-    for i in range(0, len(data_frame_to_display), num_col):
-        cols = st.columns(num_col)
-        for j, col in enumerate(cols):
-            if i + j < len(data_frame_to_display):
-                with col:
-                    row = data_frame_to_display.iloc[i + j]
-                    modelo_key = str(row.MODELO)  # clave estable
-                    st.markdown(_render_single_card_html(row), unsafe_allow_html=True)
+        """
+        num_col = 3
+        for i in range(0, len(data_frame_to_display), num_col):
+            cols = st.columns(num_col)
+            for j, col in enumerate(cols):
+                if i + j < len(data_frame_to_display):
+                    with col:
+                        row = data_frame_to_display.iloc[i + j]
+                        modelo_key = str(row.MODELO)  # clave estable
+                        st.markdown(_render_single_card_html(row), unsafe_allow_html=True)
 
-                    checkbox_key = f"{key_prefix}_fav_{i}_{j}_{hash(modelo_key)}"
-                    st.checkbox(
-                        "Guardar ❤️",
-                        value=(modelo_key in st.session_state.favs),
-                        key=checkbox_key,
-                        on_change=_toggle_fav,
-                        args=(modelo_key, checkbox_key),
-                    )
+                        checkbox_key = f"{key_prefix}_fav_{i}_{j}_{hash(modelo_key)}"
+                        st.checkbox(
+                            "Guardar ❤️",
+                            value=(modelo_key in st.session_state.favs),
+                            key=checkbox_key,
+                            on_change=_toggle_fav,
+                            args=(modelo_key, checkbox_key),
+                        )
 
-# --- Render de resultados ---
-if st.session_state.resultados is not None:
-    resultados = st.session_state.resultados
-    if resultados.empty:
-        st.warning("❌ No se encontraron motos con esos filtros.")
-    else:
-        total = len(resultados)
-        por_pagina = 9
-        total_paginas = max(1, math.ceil(total / por_pagina))
-        
-        # Asegurarse de que la página actual esté siempre dentro de los límites
-        if 'pagina' not in st.session_state:
-            st.session_state.pagina = 1
-        st.session_state.pagina = max(1, min(st.session_state.pagina, total_paginas))
+    # --- Render de resultados (MOVIDO DENTRO DE LA PESTAÑA) ---
+    if st.session_state.resultados is not None:
+        resultados = st.session_state.resultados
+        if resultados.empty:
+            st.warning("❌ No se encontraron motos con esos filtros.")
+        else:
+            total = len(resultados)
+            por_pagina = 9
+            total_paginas = max(1, math.ceil(total / por_pagina))
+            
+            if 'pagina' not in st.session_state:
+                st.session_state.pagina = 1
+            st.session_state.pagina = max(1, min(st.session_state.pagina, total_paginas))
 
-        # --- PAGINACIÓN CON BOTONES (CORREGIDO PARA SIMETRÍA) ---
-        start = (st.session_state.pagina - 1) * por_pagina
-        end = start + por_pagina
-        st.caption(f"Mostrando {start + 1}–{min(end, total)} de {total} resultados.")
+            start = (st.session_state.pagina - 1) * por_pagina
+            end = start + por_pagina
+            st.caption(f"Mostrando {start + 1}–{min(end, total)} de {total} resultados.")
+            col1, col2, col3 = st.columns(3)
+            if col1.button("⬅️ Anterior", use_container_width=True, disabled=(st.session_state.pagina <= 1)):
+                st.session_state.pagina -= 1
+                st.rerun()
+            col2.markdown(f"<div style='text-align: center; font-size: 1.1em; margin-top: 0.3rem;'>{st.session_state.pagina} / {total_paginas}</div>", unsafe_allow_html=True,)
+            if col3.button("Siguiente ➡️", use_container_width=True, disabled=(st.session_state.pagina >= total_paginas)):
+                st.session_state.pagina += 1
+                st.rerun()
+            st.markdown("---")
+            subset = resultados.iloc[start:end]
+            display_cards_from_df(subset, "main_results")
 
-        # Usamos 3 columnas de igual ancho para los controles de paginación
-        col1, col2, col3 = st.columns(3)
-
-        # Botón "Anterior": Se deshabilita si estamos en la primera página
-        if col1.button("⬅️ Anterior", use_container_width=True, disabled=(st.session_state.pagina <= 1)):
-            st.session_state.pagina -= 1
-            st.rerun()
-
-        # Indicador de página: Siempre visible en la columna central
-        col2.markdown(
-            f"<div style='text-align: center; font-size: 1.1em; margin-top: 0.3rem;'>{st.session_state.pagina} / {total_paginas}</div>",
-            unsafe_allow_html=True,
-)
-
-        # Botón "Siguiente": Se deshabilita si estamos en la última página
-        if col3.button("Siguiente ➡️", use_container_width=True, disabled=(st.session_state.pagina >= total_paginas)):
-            st.session_state.pagina += 1
-            st.rerun()
-
+    # --- Favoritas (MOVIDO DENTRO DE LA PESTAÑA) ---
+    if st.session_state.favs:
         st.markdown("---")
+        st.subheader("🗂️ Tus favoritas")
+        df_favs = df[df["MODELO"].isin(st.session_state.favs)]
+        display_cards_from_df(df_favs, "fav_section")
 
-        subset = resultados.iloc[start:end]
-        display_cards_from_df(subset, "main_results")
-# --- Favoritas ---
-if st.session_state.favs:
     st.markdown("---")
-    st.subheader("🗂️ Tus favoritas")
-    df_favs = df[df["MODELO"].isin(st.session_state.favs)]
-    display_cards_from_df(df_favs, "fav_section")
-
-st.markdown("---")
-st.caption("Desarrollado por @rofaba")
+    st.caption("Desarrollado por @rofaba")
 
 
 # ╭────────────────────────────────────────────────────────────────────────────╮
-# │ TAB: DASHBOARD                                                            │
+# │ TAB: DASHBOARD                                                             │
 # ╰────────────────────────────────────────────────────────────────────────────╯
 with tab_dash:
     st.subheader("Distribuciones y comparativas")
+
 
     # Filtros
     cflt1, cflt2 = st.columns(2)
