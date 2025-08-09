@@ -12,26 +12,27 @@ def cargar_datos(path_local="data/motofit_demo.csv"):
     """
     df = None
 
-    # Intenta cargar el DataFrame desde Streamlit Secrets
-    # Esto es útil para datos privados en despliegues en la nube.
-    if hasattr(st, "secrets") and "motofit_data" in st.secrets:
+    # Intenta cargar el DataFrame desde la URL en Streamlit Secrets.
+    # Esta es la lógica correcta para el despliegue en la nube.
+    url = st.secrets.get("DATA_URL", "").strip() if hasattr(st, "secrets") else ""
+    if url:
         try:
-            csv_data = st.secrets["motofit_data"]
-            df = pd.read_csv(io.StringIO(csv_data))
+            # Lee directamente el CSV desde la URL
+            return pd.read_csv(url)
         except Exception as e:
-            st.error(f"Error al cargar los datos desde los secretos: {e}")
+            st.error(f"Error al cargar los datos desde la URL: {e}")
             return pd.DataFrame()
 
-    # Si no se pudo cargar desde secrets, usa el archivo local
-    if df is None:
-        try:
-            df = pd.read_csv(path_local)
-        except FileNotFoundError:
-            st.error(f"Error: No se encontró el archivo de datos en {path_local}.")
-            return pd.DataFrame()
-        except Exception as e:
-            st.error(f"Error al cargar el archivo de datos local: {e}")
-            return pd.DataFrame()
+    # Si no hay URL, usa el archivo local de demostración
+    # Esta es la lógica para el desarrollo local.
+    try:
+        df = pd.read_csv(path_local)
+    except FileNotFoundError:
+        st.error(f"Error: No se encontró el archivo de datos en {path_local}.")
+        return pd.DataFrame()
+    except Exception as e:
+        st.error(f"Error al cargar el archivo de datos local: {e}")
+        return pd.DataFrame()
 
     # --- Preprocesamiento de los datos ---
     
@@ -39,7 +40,6 @@ def cargar_datos(path_local="data/motofit_demo.csv"):
     cols_numericas = ['PRECIO', 'ALTURA_ASIENTO', 'POTENCIA', 'PESO_VACIO', 'CILINDRADA']
     for col in cols_numericas:
         if col in df.columns:
-            # Limpiar valores no numéricos antes de la conversión
             df[col] = df[col].astype(str).str.replace(r'[^\d.]', '', regex=True)
             df[col] = pd.to_numeric(df[col], errors='coerce')
     
