@@ -50,7 +50,7 @@ st.markdown(
 # ── Cabecera ──
 st.title("🏍️ MotoFit")
 st.markdown(
-    "<h4>Filtra y encuentra tu moto ideal. Guarda tus favoritas con ❤️</h4>",
+    "<h4>Una app basada en datos para encontrar tu moto ideal. Explora el dashboard interactivo y guarda tus favoritas con ❤️</h4>",
     unsafe_allow_html=True,
 )
 
