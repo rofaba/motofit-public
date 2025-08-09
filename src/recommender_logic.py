@@ -14,6 +14,32 @@ def recomendar_motos(
     cilindrada_min=0,
     cilindrada_max=2000,
 ):
+    """
+    Filtra y recomienda motocicletas basadas en una serie de criterios de usuario.
+
+    Esta función aplica una secuencia de filtros para refinar el DataFrame de motos
+    y, finalmente, ordena el resultado según el criterio especificado.
+
+    Args:
+        df (pd.DataFrame): El DataFrame de entrada con la información de las motos.
+        presupuesto_max (int): Presupuesto máximo del usuario en euros.
+        carnet (str): Tipo de carnet de conducir del usuario (ej. 'A1', 'A2', 'A').
+        altura (int): Altura del usuario en cm.
+        precio_min (int, opcional): Presupuesto mínimo del usuario. Por defecto es 0.
+        marca (List[str], opcional): Lista de marcas de motos seleccionadas.
+        tipos (List[str], opcional): Lista de tipos de moto seleccionados.
+        ordenar_por (str, opcional): Columna por la cual ordenar los resultados.
+                                      Por defecto es 'PRECIO'.
+        ascendente (bool, opcional): Si la ordenación es ascendente (True) o descendente (False).
+                                      Por defecto es True.
+        cilindrada_min (int, opcional): Cilindrada mínima en cc. Por defecto es 0.
+        cilindrada_max (int, opcional): Cilindrada máxima en cc. Por defecto es 2000.
+
+    Returns:
+        pd.DataFrame: Un DataFrame filtrado y ordenado con las motos que cumplen los criterios.
+                      Devuelve un DataFrame vacío si no se encuentra ninguna moto.
+    """
+    
     df_filtrado = df.copy()
 
     # --- Convertir tipos de datos y manejar N/A una sola vez al inicio ---

@@ -6,6 +6,24 @@ from PIL import Image
 import pandas as pd
 
 def _logo_base64(path, width=70):
+
+    """
+    Convierte una imagen de logo a formato Base64 para embeberla en HTML.
+
+    Esta función lee un archivo de imagen, lo redimensiona, lo codifica en Base64
+    y lo retorna como una etiqueta HTML img. Esto permite mostrar las imágenes
+    directamente en las tarjetas de la aplicación sin necesidad de rutas de archivo
+    relativas, lo cual es útil en entornos de despliegue.
+
+    Args:
+        path (str): La ruta del archivo de imagen del logo.
+        width (int, opcional): El ancho deseado para la imagen. Por defecto es 70px.
+
+    Returns:
+        Optional[str]: Una cadena HTML con la etiqueta <img> o None si ocurre un error.
+    """
+
+
     if not os.path.exists(path):
         return None
     try:
@@ -19,6 +37,22 @@ def _logo_base64(path, width=70):
         return None
 
 def _render_single_card_html(row):
+
+    """
+    Genera el código HTML para mostrar una tarjeta de moto.
+
+    Esta función crea una tarjeta con los detalles de una moto, incluyendo
+    la marca, modelo, precio y otras especificaciones. También gestiona
+    la visualización del logo de la marca.
+
+    Args:
+        row (pd.Series): Una fila del DataFrame de motos, representando una única moto.
+        favs (Set[str]): El conjunto de modelos de motos que el usuario ha marcado como favoritos.
+
+    Returns:
+        str: Una cadena de texto con el código HTML de la tarjeta.
+    """
+
     marca_key = str(row.MARCA).lower().replace(" ", "_")
     logo_path = os.path.join("assets", "logos", f"{marca_key}.png")
     logo_tag = _logo_base64(logo_path) or f"<b>{row.MARCA}</b>"
@@ -51,7 +85,20 @@ def _render_single_card_html(row):
     """
 
 def _toggle_fav(modelo_key, checkbox_key):
-    """Callback para checkbox de favorito."""
+
+    
+    """
+    Callback para gestionar el estado de los favoritos en `st.session_state`.
+
+    Esta función se ejecuta cada vez que el usuario marca o desmarca una moto
+    como favorita. Actualiza el conjunto de favoritos y provoca un `rerun` de
+    la aplicación para que los cambios se reflejen inmediatamente.
+
+    Args:
+        modelo_key (str): El identificador único de la moto (su modelo).
+        checkbox_key (str): La clave única del widget checkbox en la sesión.
+    """
+
     checked = st.session_state.get(checkbox_key, False)
     if checked:
         st.session_state.favs.add(modelo_key)

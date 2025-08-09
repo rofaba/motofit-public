@@ -134,6 +134,15 @@ with tab_rec:
 
 # --- Mostrar tarjetas ---
 def display_cards_from_df(data_frame_to_display, key_prefix):
+
+    """
+        Renderiza las motos en tarjetas con su información y un checkbox de favorito.
+        
+        Args:
+            data_frame_to_display (pd.DataFrame): DataFrame con las motos a mostrar.
+            key_prefix (str): Prefijo para las claves de los widgets para evitar colisiones.
+    """
+    
     num_col = 3
     for i in range(0, len(data_frame_to_display), num_col):
         cols = st.columns(num_col)
