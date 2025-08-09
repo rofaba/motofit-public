@@ -1,139 +1,99 @@
 # 🏍️ MotoFit – Buscador y Recomendador de Motos
 
-**MotoFit** es una aplicación interactiva desarrollada en **Python + Streamlit** que permite filtrar, explorar y guardar motos favoritas según presupuesto, altura, licencia y tipo. Incluye un panel **Dashboard** con visualizaciones dinámicas para analizar el mercado de motos.
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28.0-orange?style=for-the-badge&logo=streamlit)](https://streamlit.io/)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by-nc/4.0/)
 
-![MotoFit Demo](assets/demo_screenshot.png) <!-- CAPTURAS -->
+**MotoFit** es una aplicación web interactiva, construida con **Python** y **Streamlit**, diseñada para ayudarte a encontrar tu moto ideal. Permite a los usuarios filtrar y explorar el mercado de motos según criterios personales como presupuesto, altura, tipo de licencia y preferencias de marca.
 
----
+También incluye un panel de control (_Dashboard_) con visualizaciones dinámicas para analizar las principales tendencias del mercado de motocicletas.
 
-## 📌 Características principales
+![MotoFit Demo](assets/demo_screenshot_recomendador.png)
+![MotoFit Demo](assets/demo_screenshot_dashboard.png)
+***
 
-- **Filtrado avanzado** por:
-  - Presupuesto mínimo y máximo
-  - Tipo de licencia (AM, B, A1, A2, A)
-  - Altura del asiento
-  - Marca y tipo de moto
-  - Orden ascendente o descendente por precio, potencia, altura o peso
-- **Sistema de favoritos** persistente durante la sesión
-- **Visualización en tarjetas** con datos clave y logos de cada marca
-- **Dashboard interactivo** con:
-  - Distribución de alturas por tipo de moto
-  - Relación precio-potencia
-  - Distribución de precios por tipo
-  - Proporción de licencias requeridas por tipo de moto
-- **Modo claro y oscuro** automático según preferencias del usuario
-- Preparado para funcionar con **dataset local** o desde **URL privada en Streamlit Cloud**
+## 🚀 Características Principales
 
----
+* **Búsqueda y Filtrado**: Filtra el mercado por un amplio rango de criterios como precio, altura del asiento, tipo de carnet, marca y tipo de moto.
+* **Sistema de Favoritos**: Guarda tus motos preferidas en una lista que persiste durante la sesión para una comparación rápida.
+* **Visualizaciones Interactivas**: Un _Dashboard_ con gráficos dinámicos que muestran la distribución de alturas, la relación precio-potencia y otros datos clave del mercado.
+* **Modo Oscuro/Claro**: La interfaz se adapta automáticamente a las preferencias de tu sistema operativo.
+* **Gestión de Datos Flexible**: Configurado para usar un dataset de demostración local o conectarse a un dataset privado en la nube a través de Streamlit Secrets.
 
-## 📂 Estructura del proyecto
+***
+
+## ⚙️ Estructura del Proyecto
 
 ```bash
 MotoFit/
-│
-├── app.py                     # Aplicación principal Streamlit
-├── requirements.txt           # Dependencias del proyecto
-├── LICENSE.md                 # Licencia CC BY-NC 4.0
-├── README.md                  # Este archivo
+├── .streamlit/
+│   └── secrets.toml             # Archivo de secretos (privado, NO subir a Git)
 │
 ├── data/
-│   ├── motofit_demo.csv        # Dataset reducido de ejemplo (uso en GitHub)
-│   └── motofit_limpio.csv      # Dataset completo (NO incluir en repositorio público)
+│   └── motofit_demo.csv         # Dataset de demostración para uso público
 │
 ├── assets/
-│   └── logos/                  # Logos PNG de las marcas
+│   ├── demo_screenshot.png      # Captura de pantalla de la aplicación
+│   └── logos/
+│       └── <marcas>.png         # Logos de las marcas
 │
-└── src/
-    ├── utils.py                # Funciones auxiliares (tarjetas, favoritos, logos)
-    ├── data_preprocessing.py   # Carga y limpieza de datos
-    └── recommender_logic.py    # Lógica de filtrado/recomendación
+├── src/
+│   ├── data_preprocessing.py    # Lógica de carga y limpieza de datos
+│   ├── recommender_logic.py     # Lógica de filtrado y recomendación
+│   └── utils.py                 # Funciones auxiliares (tarjetas, etc.)
+│
+├── app.py                       # Archivo principal de Streamlit
+├── requirements.txt             # Dependencias de Python
+└── README.md                    # Este archivo
+🏁 Instalación y Uso Local
+Clona el repositorio:
 
-## Instalación y uso local.
-# 1. Clonar el repositorio
+Bash
 
-git clone https://github.com/usuario/motofit.git
-cd motofit
+git clone [https://github.rofaba/motofit-public.git](https://github.rofaba/motofit-public.git)
+cd motofit-public
+Crea un entorno virtual e instala las dependencias:
 
-# 2. Crear un entorno virtual e instalar dependencias
+Bash
+
 python -m venv venv
-source venv/bin/activate  # Linux / Mac
-venv\Scripts\activate     # Windows
+source venv/bin/activate    # Linux / macOS
+venv\Scripts\activate       # Windows
 pip install -r requirements.txt
+Ejecuta la aplicación:
 
-# 3. Ejecutar la app
+Bash
+
 streamlit run app.py
+Abre tu navegador y ve a http://localhost:8501.
 
-# 4. Abrir el navegador
-http://localhost:8501
+📝 Dataset
+El dataset de demostración (data/motofit_demo.csv) incluye información clave sobre cada moto, como marca, modelo, precio, potencia, altura del asiento y licencia requerida. El dataset completo utilizado para la versión de producción es privado y no está incluido en este repositorio.
 
-
-
-📊 Dataset
-El dataset incluye información de cada moto:
-
-Marca
-
-Modelo
-
-Tipo simplificado (Adventure, Naked, Sport, etc.)
-
-Potencia (cv)
-
-Precio (€)
-
-Altura del asiento (mm)
-
-Peso en vacío (kg)
-
-Licencia mínima requerida
-
-⚠️ Importante: El dataset completo es privado y no se incluye en este repositorio.
-Solo se publica una versión reducida (motofit_demo.csv) para fines de demostración.
-
-🧪 Testing
-El proyecto incluye un breve documento de testing manual que valida:
-
-Carga de datos desde CSV local y remoto
-
-Filtrado correcto por cada criterio
-
-Ordenamiento ascendente y descendente
-
-Funcionamiento del sistema de favoritos
-
-Renderizado correcto de las tarjetas y logos
-
-Comportamiento esperado de las visualizaciones del Dashboard
-
-🛠 Tecnologías utilizadas
+🛠 Tecnologías Utilizadas
 Python 3.10+
 
 Streamlit
 
 Pandas
 
-Altair (visualizaciones)
+Altair
 
-Plotly Express (visualizaciones interactivas)
-
-Pillow (procesamiento de imágenes)
-
-Base64 (logos embebidos en HTML)
+Plotly Express
 
 📄 Licencia
-Este proyecto está bajo la Licencia Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).
-No se permite su uso con fines comerciales. Más información en el archivo LICENSE.md.
+Este proyecto está bajo la Licencia Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). No se permite el uso comercial del mismo.
 
-👤 Autor
-Desarrollado por Rodrigo Faba
-📍 Málaga, España
-💼 LinkedIn | 🐙 GitHub
+🧑‍💻 Autor
+Rodrigo Faure
 
-💡 Ideas futuras
-Añadir pseudo-recomendador con mensajes personalizados según filtros (sin ML real)
+LinkedIn: [Enlace a tu perfil de LinkedIn]
 
-Mejorar compatibilidad móvil
+GitHub: [Enlace a tu perfil de GitHub]
 
-Soporte multi-idioma
+💡 Ideas Futuras
+Implementar un sistema de recomendación basado en Machine Learning.
 
-Integración de modelos de Machine Learning para recomendaciones inteligentes
+Mejorar la compatibilidad y el diseño para dispositivos móviles.
+
+Añadir soporte para múltiples idiomas.
