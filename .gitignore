@@ -1,0 +1,5 @@
+# Archivos de Streamlit para producción (privados)
+.streamlit/secrets.toml
+
+# Carpeta con el dataset de demo local
+data/motofit_limpio.csv
