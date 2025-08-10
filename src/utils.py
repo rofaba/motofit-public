@@ -105,7 +105,7 @@ def _toggle_fav(modelo_key, checkbox_key):
     else:
         st.session_state.favs.discard(modelo_key)
 
-    # Rerender inmediatamente tras el cambio
+    # Rerender inmediatamente tras el cambio, se implementaron las dos opciones para evitar la caída de la app por incompatibilidad.
     if hasattr(st, "rerun"):
         st.rerun()  # versiones nuevas
     else:

@@ -12,7 +12,7 @@ def cargar_datos(path_local="data/motofit_demo.csv"):
     """
     df = None
 
-    # Intenta cargar el DataFrame desde la URL en Streamlit Secrets.
+    # Intenta cargar el DataFrame desde la URL en Streamlit Secrets (alojado por ahora en Google Drive).
     # Esta es la lógica correcta para el despliegue en la nube.
     url = st.secrets.get("DATA_URL", "").strip() if hasattr(st, "secrets") else ""
     if url:
@@ -53,7 +53,7 @@ def cargar_datos(path_local="data/motofit_demo.csv"):
     columnas_esenciales = ['PRECIO', 'ALTURA_ASIENTO', 'CARNET_MINIMO', 'MARCA', 'TIPO_SIMPLIFICADO', 'CILINDRADA']
     df.dropna(subset=columnas_esenciales, inplace=True)
     
-    # 4. Asegurarse de que el índice sea limpio
+    # 4. Limpiar los índices
     df.reset_index(drop=True, inplace=True)
 
     return df
