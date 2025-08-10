@@ -24,7 +24,7 @@ if "favs" not in st.session_state:
 # ── Datos ──
 @st.cache_data
 def get_data():
-    return cargar_datos("data/motofit_limpio_con_vespa.csv")
+    return cargar_datos("data/motofit_limpio.csv")
 
 df = get_data()
 
@@ -57,9 +57,9 @@ st.markdown(
 # ── Pestañas ──
 tab_rec, tab_dash = st.tabs(["🏍 Recomendador", "📊 Dashboard"])
 
-# ╭────────────────────────────────────────────────────────────────────────────╮
-# │ TAB: RECOMENDADOR                                                          │
-# ╰────────────────────────────────────────────────────────────────────────────╯
+
+#  TAB: RECOMENDADOR
+       
 with tab_rec:
     st.subheader("Datos para la recomendación")
 
@@ -130,7 +130,7 @@ with tab_rec:
         )
         st.session_state.pagina = 1
 
-    # --- Función para mostrar tarjetas (se mantiene fuera de la pestaña para que sea global) ---
+    # --- Función para mostrar tarjetas  ---
     def display_cards_from_df(data_frame_to_display, key_prefix):
         """
         Renderiza las motos en tarjetas con su información y un checkbox de favorito.
@@ -158,7 +158,7 @@ with tab_rec:
                             args=(modelo_key, checkbox_key),
                         )
 
-    # --- Render de resultados (MOVIDO DENTRO DE LA PESTAÑA) ---
+    # --- Render de resultados  ---
     if st.session_state.resultados is not None:
         resultados = st.session_state.resultados
         if resultados.empty:
@@ -187,7 +187,7 @@ with tab_rec:
             subset = resultados.iloc[start:end]
             display_cards_from_df(subset, "main_results")
 
-    # --- Favoritas (MOVIDO DENTRO DE LA PESTAÑA) ---
+    # --- Favoritas  ---
     if st.session_state.favs:
         st.markdown("---")
         st.subheader("🗂️ Tus favoritas")
@@ -198,9 +198,8 @@ with tab_rec:
     st.caption("Desarrollado por @rofaba")
 
 
-# ╭────────────────────────────────────────────────────────────────────────────╮
-# │ TAB: DASHBOARD                                                             │
-# ╰────────────────────────────────────────────────────────────────────────────╯
+# TAB: DASHBOARD    
+
 with tab_dash:
     st.subheader("Distribuciones y comparativas")
 

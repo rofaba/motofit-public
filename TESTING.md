@@ -1,7 +1,7 @@
 # 🧪 Plan de Pruebas – MotoFit
 
 **Versión:** v1.0  
-**Fecha:** (yyyy-mm-dd)  
+**Fecha:** (0000-00-00)  
 **Entorno:**  
 - Local: `data/motofit_demo.csv`  
 - Producción: `st.secrets["DATA_URL"]` (CSV remoto)
@@ -105,7 +105,6 @@
 ## 7) Observaciones
 
 - [ ] Notas, errores, decisiones y pendientes.
-- [ ] Capturas de pantalla si algo falla (adjuntar en `/assets/test/` si quieres).
 
 ---
 

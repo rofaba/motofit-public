@@ -14,9 +14,9 @@ También incluye un panel de control (_Dashboard_) con visualizaciones dinámica
 
 ## 🚀 Características Principales
 
-* **Búsqueda y Filtrado**: Filtra el mercado por un amplio rango de criterios como precio, altura del asiento, tipo de carnet, marca y tipo de moto.
+* **Búsqueda y Filtrado**: Filtra el mercado por un amplio rango de criterios como precio, cilindrada, altura del asiento, tipo de carnet, marca y tipo de moto.
 * **Sistema de Favoritos**: Guarda tus motos preferidas en una lista que persiste durante la sesión para una comparación rápida.
-* **Visualizaciones Interactivas**: Un _Dashboard_ con gráficos dinámicos que muestran la distribución de alturas, la relación precio-potencia y otros datos clave del mercado.
+* **Visualizaciones Interactivas**: Un _Dashboard_ interactivo con gráficos dinámicos que muestran la distribución de alturas, la relación precio-potencia y otros datos clave del mercado.
 * **Modo Oscuro/Claro**: La interfaz se adapta automáticamente a las preferencias de tu sistema operativo.
 * **Gestión de Datos Flexible**: Configurado para usar un dataset de demostración local o conectarse a un dataset privado en la nube a través de Streamlit Secrets.
 
@@ -27,24 +27,24 @@ También incluye un panel de control (_Dashboard_) con visualizaciones dinámica
 ```bash
 MotoFit/
 ├── .streamlit/
-│   └── secrets.toml             # Archivo de secretos (privado, NO subir a Git)
+│   └── secrets.toml             
 │
 ├── data/
 │   └── motofit_demo.csv         # Dataset de demostración para uso público
 │
 ├── assets/
-│   ├── demo_screenshot.png      # Captura de pantalla de la aplicación
+│   ├── demo_screenshot.png      
 │   └── logos/
-│       └── <marcas>.png         # Logos de las marcas
+│       └── <marcas>.png         
 │
 ├── src/
 │   ├── data_preprocessing.py    # Lógica de carga y limpieza de datos
 │   ├── recommender_logic.py     # Lógica de filtrado y recomendación
 │   └── utils.py                 # Funciones auxiliares (tarjetas, etc.)
 │
-├── app.py                       # Archivo principal de Streamlit
-├── requirements.txt             # Dependencias de Python
-└── README.md                    # Este archivo
+├── app.py                       
+├── requirements.txt             
+└── README.md                    
 🏁 Instalación y Uso Local
 Clona el repositorio:
 
@@ -87,11 +87,13 @@ Este proyecto está bajo la Licencia Creative Commons Attribution-NonCommercial 
 🧑‍💻 Autor
 Rodrigo Faure
 
-LinkedIn: [Enlace a tu perfil de LinkedIn]
+LinkedIn: [https://www.linkedin.com/in/rodrigo-faure-46376266/]
 
-GitHub: [Enlace a tu perfil de GitHub]
+GitHub: [https://github.com/rofaba]
 
 💡 Ideas Futuras
+Ampliar y mejorar el dataset, utilizando otras características adicionales
+
 Implementar un sistema de recomendación basado en Machine Learning.
 
 Mejorar la compatibilidad y el diseño para dispositivos móviles.
